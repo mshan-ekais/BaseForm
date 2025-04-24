@@ -1,4 +1,5 @@
 ﻿using BaseForm.Modules;
+using FontAwesome.Sharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,24 +13,41 @@ using System.Windows.Forms;
 
 namespace BaseForm
 {
-    public partial class Form1 : Form
+    public partial class BorderlessMainForm : Form
     {
         //Fields
         private int borderSize = 2;
         private Size formSize;
 
+        private ThemeColors currentTheme = ThemeColors.VisualStudio2019Style;
+        private Panel overlayPanel;
 
         private Dictionary<string, UserControl> loadedModules = new Dictionary<string, UserControl>();
 
+
         //Constructor
-        public Form1()
+        public BorderlessMainForm()
         {
             InitializeComponent();
             //CollaseMenu();
-
             this.Padding = new Padding(borderSize); //Border size
-            this.BackColor = Color.FromArgb(35, 49, 121);  //Border color
+            //CreateOverlay();
+            //ColorChanged();
+            ApplyTheme(currentTheme);
         }
+
+        private void CreateOverlay()
+        {
+            overlayPanel = new Panel
+            {
+                BackColor = Color.FromArgb(120, 0, 0, 0), // 반투명 검정
+                Dock = DockStyle.Fill,
+                Visible = false
+            };
+            this.Controls.Add(overlayPanel);
+            overlayPanel.BringToFront();
+        }
+
 
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
         private extern static void ReleaseCapture();
@@ -37,17 +55,84 @@ namespace BaseForm
         [DllImport("user32.DLL", EntryPoint = "SendMessage")]
         private extern static void SendMessage(System.IntPtr hWnd, int wMsg, int wParm, int lParm);
 
-        private void panelTitleBar_MouseDown(object sender, MouseEventArgs e)
-        {
-            ReleaseCapture();
-            SendMessage(this.Handle, 0x112, 0xf012, 0);
-        }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void Form_Load(object sender, EventArgs e)
         {
             formSize = this.ClientSize;
-            panelControl.Controls.Add(new ucHome() { Dock = DockStyle.Fill });
+            panelControl.Controls.Add(new ucHome() 
+            { 
+                Dock = DockStyle.Fill,
+            });
         }
+
+        private void ApplyTheme(ThemeColors theme)
+        {
+            currentTheme = theme;
+            this.BackColor = theme.BackColor;
+            this.panelControlBar.BackColor = theme.TopPanelColor;
+            this.panelMenu.BackColor = theme.MenuPanelColor;
+            this.panelLeft.BackColor = theme.PointColor;
+            this.pictureBoxLogo.Image = theme.Image;
+
+
+            //if (loadedModules.TryGetValue("ucEditForm", out var ctrl) && ctrl is ucEditForm editForm)
+            //{
+            //    editForm.ThemeColor = currentTheme;
+            //}
+
+
+            //if (loadedModules.TryGetValue("ucEditForm", out var ctrl) && ctrl is ucEditForm editForm)
+            //{
+            //    editForm.FontColor = theme.FontColor;
+            //}
+
+
+
+            foreach (var control in GetAllControls(this))
+            {
+                if (control is IconButton btn)
+                {
+                    if (btn.Tag != null && btn.Tag.ToString() == "button")
+                    {
+                        btn.BackColor = theme.ButtonColor;
+                    }
+                    btn.IconColor = theme.IconColor;
+                    btn.ForeColor = theme.FontColor;
+                }
+            }
+        }
+
+
+        public static IEnumerable<Control> GetAllControls(Control parent)
+        {
+            foreach (Control child in parent.Controls)
+            {
+                yield return child;
+
+                foreach (Control grandChild in GetAllControls(child))
+                {
+                    yield return grandChild;
+                }
+            }
+        }
+
+        protected void MakeFormDraggable(Control dragArea)
+        {
+            dragArea.MouseDown += (s, e) =>
+            {
+                ReleaseCapture();
+                SendMessage(this.Handle, 0x112, 0xf012, 0);
+            };
+        }
+
+        private void panelControlBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            MakeFormDraggable(panelControlBar);
+            //ReleaseCapture();
+            //SendMessage(this.Handle, 0x112, 0xf012, 0);
+        }
+
+
 
         //Overridden methods
         protected override void WndProc(ref Message m)
@@ -159,11 +244,17 @@ namespace BaseForm
 
         private void iconButtonWindowMax_Click(object sender, EventArgs e)
         {
+            windowMax();
+        }
+
+        private void windowMax()
+        {
             if (this.WindowState == FormWindowState.Normal)
                 this.WindowState = FormWindowState.Maximized;
             else
                 this.WindowState = FormWindowState.Normal;
         }
+
 
         private void iconButtonWindowClose_Click(object sender, EventArgs e)
         {
@@ -202,13 +293,13 @@ namespace BaseForm
                     if (menuButton.Tag.ToString() == "menu")
                     {
                         menuButton.ImageAlign = ContentAlignment.MiddleRight;
-                        menuButton.Padding = new Padding(0, 0, 15, 0);
+                        menuButton.Padding = new Padding(30, 30, 30, 30);
                     }
                     else
                     {
                         menuButton.Text = menuButton.Tag.ToString();
                         menuButton.ImageAlign = ContentAlignment.MiddleLeft;
-                        menuButton.Padding = new Padding(10, 10, 0, 10);
+                        menuButton.Padding = new Padding(30, 10, 0, 10);
                     }
                 }
             }
@@ -217,22 +308,30 @@ namespace BaseForm
 
         private async void iconButtonHome_Click(object sender, EventArgs e)
         {
+            panelLeft.Height = iconButtonHome.Height;
+            panelLeft.Top = iconButtonHome.Top;
             await LoadModuleAsync("ucHome", () => new ucHome());
         }
 
         private async void iconButtonMeasure_Click(object sender, EventArgs e)
         {
+            panelLeft.Height = iconButtonMeasure.Height;
+            panelLeft.Top = iconButtonMeasure.Top;
             await LoadModuleAsync("ucMeasurement", () => new ucMeasurement());
         }
 
 
         private async void iconButtonDataLog_Click(object sender, EventArgs e)
         {
+            panelLeft.Height = iconButtonDataLog.Height;
+            panelLeft.Top = iconButtonDataLog.Top;
             await LoadModuleAsync("ucDataLog", () => new ucDataLog());
         }
 
         private async void iconButtonSetting_Click(object sender, EventArgs e)
         {
+            panelLeft.Height = iconButtonSetting.Height;
+            panelLeft.Top = iconButtonSetting.Top;
             await LoadModuleAsync("ucSetting", () => new ucSetting());
         }
 
@@ -244,8 +343,59 @@ namespace BaseForm
             panelControl.Controls.Clear();
             panelControl.Controls.Add(loadedModules[moduleKey]);
             loadedModules[moduleKey].Dock = DockStyle.Fill;
+            //loadedModules[moduleKey].BackColor = backColor;
 
             await Task.CompletedTask;
+        }
+
+        private async void iconButtonIEditForm_Click(object sender, EventArgs e)
+        {
+            panelLeft.Height = iconButtonIEditForm.Height;
+            panelLeft.Top = iconButtonIEditForm.Top;
+            //await LoadModuleAsync("ucEditForm", () => new ucEditForm());
+
+            //await LoadModuleAsync("ucEditForm", () =>
+            //{
+            //    var control = new ucEditForm();
+            //    control.ThemeColor = currentTheme;
+            //    return control;
+            //});
+            //using (formEditForm formEdit = new formEditForm())
+            //{
+            //    formEdit.Size = new Size(300, 200);
+            //    formEdit.ThemeColor = currentTheme;
+
+            //    var result = formEdit.ShowDialog(); // 모달로 열기
+
+            //    if (result == DialogResult.OK)
+            //    {
+            //    }
+            //    else
+            //    {
+            //    }
+            //}
+
+
+        }
+
+        private void iconButtonClose_Click(object sender, EventArgs e)
+        {
+            using (formPopup popup = new formPopup())
+            {
+                popup.Size = new Size(300, 200);
+                popup.labelText.Text = "Are you sure you want to\nexit the program?";
+                popup.ThemeColor = currentTheme;
+
+                var result = popup.ShowDialog(); // 모달로 열기
+                
+                if (result == DialogResult.OK)
+                {
+                    //string value = popup.ResultText;
+                }
+                else
+                {
+                }
+            }
         }
     }
 }

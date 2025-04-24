@@ -63,9 +63,39 @@ namespace BaseForm.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap Kais_Logo {
+        internal static System.Drawing.Bitmap kais_basic {
             get {
-                object obj = ResourceManager.GetObject("Kais_Logo", resourceCulture);
+                object obj = ResourceManager.GetObject("kais_basic", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap kais_black {
+            get {
+                object obj = ResourceManager.GetObject("kais_black", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap kais_white {
+            get {
+                object obj = ResourceManager.GetObject("kais_white", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap kais_white_red {
+            get {
+                object obj = ResourceManager.GetObject("kais_white_red", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
