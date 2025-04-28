@@ -42,14 +42,14 @@ namespace BaseForm
             this.iconButtonMenu = new FontAwesome.Sharp.IconButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
-            this.panelControlBar = new System.Windows.Forms.Panel();
+            this.panelTopBar = new System.Windows.Forms.Panel();
             this.iconButtonWindowMin = new FontAwesome.Sharp.IconButton();
             this.iconButtonWindowMax = new FontAwesome.Sharp.IconButton();
             this.iconButtonWindowClose = new FontAwesome.Sharp.IconButton();
             this.panelMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
-            this.panelControlBar.SuspendLayout();
+            this.panelTopBar.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelControl
@@ -277,18 +277,18 @@ namespace BaseForm
             this.pictureBoxLogo.TabIndex = 0;
             this.pictureBoxLogo.TabStop = false;
             // 
-            // panelControlBar
+            // panelTopBar
             // 
-            this.panelControlBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(32)))), ((int)(((byte)(34)))));
-            this.panelControlBar.Controls.Add(this.iconButtonWindowMin);
-            this.panelControlBar.Controls.Add(this.iconButtonWindowMax);
-            this.panelControlBar.Controls.Add(this.iconButtonWindowClose);
-            this.panelControlBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelControlBar.Location = new System.Drawing.Point(230, 0);
-            this.panelControlBar.Name = "panelControlBar";
-            this.panelControlBar.Size = new System.Drawing.Size(1249, 46);
-            this.panelControlBar.TabIndex = 15;
-            this.panelControlBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelControlBar_MouseDown);
+            this.panelTopBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(44)))), ((int)(((byte)(55)))));
+            this.panelTopBar.Controls.Add(this.iconButtonWindowMin);
+            this.panelTopBar.Controls.Add(this.iconButtonWindowMax);
+            this.panelTopBar.Controls.Add(this.iconButtonWindowClose);
+            this.panelTopBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelTopBar.Location = new System.Drawing.Point(230, 0);
+            this.panelTopBar.Name = "panelTopBar";
+            this.panelTopBar.Size = new System.Drawing.Size(1249, 46);
+            this.panelTopBar.TabIndex = 15;
+            this.panelTopBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelControlBar_MouseDown);
             // 
             // iconButtonWindowMin
             // 
@@ -341,22 +341,22 @@ namespace BaseForm
             this.iconButtonWindowClose.UseVisualStyleBackColor = false;
             this.iconButtonWindowClose.Click += new System.EventHandler(this.iconButtonWindowClose_Click);
             // 
-            // Form1
+            // BorderlessMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1479, 879);
             this.Controls.Add(this.panelControl);
-            this.Controls.Add(this.panelControlBar);
+            this.Controls.Add(this.panelTopBar);
             this.Controls.Add(this.panelMenu);
-            this.Name = "Form1";
+            this.Name = "BorderlessMainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form_Load);
             this.panelMenu.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
-            this.panelControlBar.ResumeLayout(false);
+            this.panelTopBar.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -376,7 +376,7 @@ namespace BaseForm
         private FontAwesome.Sharp.IconButton iconButtonMenu;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBoxLogo;
-        private System.Windows.Forms.Panel panelControlBar;
+        private System.Windows.Forms.Panel panelTopBar;
         private System.Windows.Forms.Panel panelLeft;
         private FontAwesome.Sharp.IconButton iconButtonIEditForm;
     }

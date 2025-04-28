@@ -1,20 +1,28 @@
-﻿using System;
+﻿using BaseForm.Modules;
+using FontAwesome.Sharp;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BaseForm.Modules
+namespace BaseForm.SampleCode
 {
-    public partial class formEditForm : Form
+    public partial class formSample : Form
     {
+        private int borderSize = 2;
 
-        public string ResultText { get; private set; } = string.Empty;
+        public formSample()
+        {
+            InitializeComponent();
+        }
 
+        #region
         private ThemeColors _themeColor;
 
         public ThemeColors ThemeColor
@@ -23,14 +31,53 @@ namespace BaseForm.Modules
             set
             {
                 _themeColor = value;
-                //ApplyTheme(_themeColor);  // ✅ 값을 할당할 때마다 함수 실행
+                ApplyTheme(_themeColor);
             }
         }
 
-        private int borderSize = 2;
-        public formEditForm()
+        private void ApplyTheme(ThemeColors theme)
         {
-            InitializeComponent();
+            this.BackColor = theme.BorderColor;
+
+            foreach (var control in GetAllControls(this))
+            {
+                if (control is Panel pnl)
+                {
+                    if (pnl.Tag != null && pnl.Tag.ToString() == "panelControlBar")
+                        pnl.BackColor = theme.TopPanelColor;
+                    else
+                        pnl.BackColor = theme.BackColor;
+                }
+
+                if (control is Label lbl)
+                    lbl.ForeColor = theme.FontColor;
+
+
+                if (control is IconButton btn)
+                {
+                    if (btn.Tag != null && btn.Tag.ToString() == "button")
+                    {
+                        btn.BackColor = theme.PointColor;
+                        //btn.ForeColor = theme.FontColor;
+                    }
+
+                    btn.IconColor = theme.FontColor;
+                    btn.ForeColor = theme.FontColor;
+                }
+            }
+        }
+
+        public static IEnumerable<Control> GetAllControls(Control parent)
+        {
+            foreach (Control child in parent.Controls)
+            {
+                yield return child;
+
+                foreach (Control grandChild in GetAllControls(child))
+                {
+                    yield return grandChild;
+                }
+            }
         }
 
         protected override void WndProc(ref Message m)
@@ -97,11 +144,49 @@ namespace BaseForm.Modules
             base.WndProc(ref m);
         }
 
+        [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
+        private extern static void ReleaseCapture();
 
+        [DllImport("user32.DLL", EntryPoint = "SendMessage")]
+        private extern static void SendMessage(System.IntPtr hWnd, int wMsg, int wParm, int lParm);
 
+        private void panelControlBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            ReleaseCapture();
+            SendMessage(this.Handle, 0x112, 0xf012, 0);
+        }
 
+        #endregion
 
+        private void iconButtonClose_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
+
+        private void iconButtonOK_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void AdjustForm()
+        {
+            switch (this.WindowState)
+            {
+                case FormWindowState.Maximized:
+                    this.Padding = new Padding(8, 8, 8, 0);
+                    break;
+                case FormWindowState.Normal:
+                    if (this.Padding.Top != borderSize)
+                        this.Padding = new Padding(borderSize);
+                    break;
+            }
+        }
+
+        private void formSample_Resize(object sender, EventArgs e)
+        {
+            AdjustForm();
+        }
     }
-
-
 }

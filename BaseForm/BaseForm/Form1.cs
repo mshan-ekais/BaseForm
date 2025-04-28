@@ -19,7 +19,7 @@ namespace BaseForm
         private int borderSize = 2;
         private Size formSize;
 
-        private ThemeColors currentTheme = ThemeColors.VisualStudio2019Style;
+        private ThemeColors currentTheme = ThemeColors.NavyRedStyle;
         private Panel overlayPanel;
 
         private Dictionary<string, UserControl> loadedModules = new Dictionary<string, UserControl>();
@@ -69,7 +69,7 @@ namespace BaseForm
         {
             currentTheme = theme;
             this.BackColor = theme.BackColor;
-            this.panelControlBar.BackColor = theme.TopPanelColor;
+            this.panelTopBar.BackColor = theme.TopPanelColor;
             this.panelMenu.BackColor = theme.MenuPanelColor;
             this.panelLeft.BackColor = theme.PointColor;
             this.pictureBoxLogo.Image = theme.Image;
@@ -87,7 +87,6 @@ namespace BaseForm
             //}
 
 
-
             foreach (var control in GetAllControls(this))
             {
                 if (control is IconButton btn)
@@ -98,6 +97,10 @@ namespace BaseForm
                     }
                     btn.IconColor = theme.IconColor;
                     btn.ForeColor = theme.FontColor;
+                }
+                else
+                {
+                    control.ForeColor = theme.FontColor;
                 }
             }
         }
@@ -127,7 +130,7 @@ namespace BaseForm
 
         private void panelControlBar_MouseDown(object sender, MouseEventArgs e)
         {
-            MakeFormDraggable(panelControlBar);
+            MakeFormDraggable(panelTopBar);
             //ReleaseCapture();
             //SendMessage(this.Handle, 0x112, 0xf012, 0);
         }
@@ -343,51 +346,54 @@ namespace BaseForm
             panelControl.Controls.Clear();
             panelControl.Controls.Add(loadedModules[moduleKey]);
             loadedModules[moduleKey].Dock = DockStyle.Fill;
-            //loadedModules[moduleKey].BackColor = backColor;
 
             await Task.CompletedTask;
         }
 
-        private async void iconButtonIEditForm_Click(object sender, EventArgs e)
+        private void iconButtonIEditForm_Click(object sender, EventArgs e)
         {
-            panelLeft.Height = iconButtonIEditForm.Height;
-            panelLeft.Top = iconButtonIEditForm.Top;
-            //await LoadModuleAsync("ucEditForm", () => new ucEditForm());
-
-            //await LoadModuleAsync("ucEditForm", () =>
-            //{
-            //    var control = new ucEditForm();
-            //    control.ThemeColor = currentTheme;
-            //    return control;
-            //});
-            //using (formEditForm formEdit = new formEditForm())
-            //{
-            //    formEdit.Size = new Size(300, 200);
-            //    formEdit.ThemeColor = currentTheme;
-
-            //    var result = formEdit.ShowDialog(); // 모달로 열기
-
-            //    if (result == DialogResult.OK)
-            //    {
-            //    }
-            //    else
-            //    {
-            //    }
-            //}
+            this.ActiveControl = null;
 
 
+            using (formEditForm editForm = new formEditForm())
+            {
+                editForm.Size = new Size(Convert.ToInt32(panelControl.Width * 0.8), Convert.ToInt32(panelControl.Height * 0.8));
+
+                // 패널 기준 중심 좌표 계산
+                int x = panelControl.Left + (panelControl.Width - editForm.Width) / 2;
+                int y = panelControl.Top + (panelControl.Height - editForm.Height) / 2;
+
+                editForm.StartPosition = FormStartPosition.Manual;
+                editForm.Location = panelControl.PointToScreen(new Point(x - panelControl.Left, y - panelControl.Top));
+
+                editForm.ThemeColor = currentTheme;
+                editForm.ThemeChanged += theme =>
+                {
+                    this.ApplyTheme(theme); // MainForm에 테마 적용
+                };
+
+                var result = editForm.ShowDialog(); // 모달로 열기
+
+                if (result == DialogResult.OK)
+                {
+                }
+                else
+                {
+                }
+            }
         }
 
         private void iconButtonClose_Click(object sender, EventArgs e)
         {
+            this.ActiveControl = null;
+
             using (formPopup popup = new formPopup())
             {
                 popup.Size = new Size(300, 200);
                 popup.labelText.Text = "Are you sure you want to\nexit the program?";
                 popup.ThemeColor = currentTheme;
 
-                var result = popup.ShowDialog(); // 모달로 열기
-                
+                var result = popup.ShowDialog();
                 if (result == DialogResult.OK)
                 {
                     //string value = popup.ResultText;

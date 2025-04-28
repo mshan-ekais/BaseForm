@@ -1,4 +1,5 @@
-﻿using FontAwesome.Sharp;
+﻿using BaseForm.Modules.FormEdit;
+using FontAwesome.Sharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,28 +13,95 @@ using System.Windows.Forms;
 
 namespace BaseForm.Modules
 {
-    public partial class formPopup : Form
+    public partial class formEditForm : Form
     {
-        public string ResultText { get; private set; } = string.Empty;
+        private Dictionary<string, UserControl> loadedModules = new Dictionary<string, UserControl>();
+        public event Action<ThemeColors> ThemeChanged;
+        private ThemeColors _currentTheme;
+        private Color menuBackColor;
+        private const int BorderSize = 2;
 
-        private ThemeColors _themeColor;
-
-        public ThemeColors ThemeColor
-        {
-            get => _themeColor;
-            set
-            {
-                _themeColor = value;
-                ApplyTheme(_themeColor);
-            }
-        }
-
-        private int borderSize = 2;
-
-        public formPopup()
+        public formEditForm()
         {
             InitializeComponent();
         }
+
+        #region Theme 설정 및 헬퍼 메서드
+        public ThemeColors ThemeColor
+        {
+            get => _currentTheme;
+            set
+            {
+                _currentTheme = value;
+                ApplyTheme(_currentTheme);
+            }
+        }
+
+        public static Color LightenColor(Color color, float amount = 0.2f)
+        {
+            int r = (int)(color.R + (255 - color.R) * amount);
+            int g = (int)(color.G + (255 - color.G) * amount);
+            int b = (int)(color.B + (255 - color.B) * amount);
+            return Color.FromArgb(color.A, r, g, b);
+        }
+
+
+        public static IEnumerable<Control> GetAllControls(Control parent)
+        {
+            foreach (Control child in parent.Controls)
+            {
+                yield return child;
+
+                foreach (Control grandChild in GetAllControls(child))
+                {
+                    yield return grandChild;
+                }
+            }
+        }
+
+        private void ApplyTheme(ThemeColors theme)
+        {
+            this.BackColor = theme.BorderColor;
+            this.panelTopBar.BackColor = theme.TopPanelColor;
+            menuBackColor = LightenColor(theme.MenuPanelColor, 0.1f);
+            this.panelMenu.BackColor = menuBackColor;
+
+            foreach (var control in GetAllControls(this))
+            {
+                if (control is Panel pnl && pnl.Tag?.ToString() == "panelControl")
+                    pnl.BackColor = LightenColor(theme.BackColor, 0.1f);
+
+                if (control is IconButton btn)
+                {
+                    if (btn.Tag != null && btn.Tag.ToString() == "button")
+                    {
+                        btn.BackColor = theme.ButtonColor;
+                    }
+                    btn.IconColor = theme.IconColor;
+                    btn.ForeColor = theme.FontColor;
+                }
+
+                control.ForeColor = theme.FontColor;
+            }
+
+            foreach (var control in GetAllControls(this.panelMenu))
+            {
+                if (control is IconButton btn)
+                    btn.BackColor = menuBackColor;
+            }
+
+
+            if (panelControl.Controls.Count > 0)
+            {
+                var currentControl = panelControl.Controls[0];
+                if (currentControl is ucThemeColors)
+                    iconButtonColor.BackColor = _currentTheme.PointColor;
+            }
+        }
+
+        #endregion
+
+        #region Form Behavior
 
         protected override void WndProc(ref Message m)
         {
@@ -99,13 +167,6 @@ namespace BaseForm.Modules
             base.WndProc(ref m);
         }
 
-        private void iconButtonClose_Click(object sender, EventArgs e)
-        {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
-        }
-
-
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
         private extern static void ReleaseCapture();
 
@@ -118,60 +179,26 @@ namespace BaseForm.Modules
             SendMessage(this.Handle, 0x112, 0xf012, 0);
         }
 
-        private void formPopup_Load(object sender, EventArgs e)
+        private void iconButtonClose_Click(object sender, EventArgs e)
         {
-
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
         }
 
-        private void ApplyTheme(ThemeColors theme)
+
+        private void formEditForm_Load(object sender, EventArgs e)
         {
-            this.BackColor = theme.BorderColor;
-
-            foreach (var control in GetAllControls(this))
-            {
-                if(control is Panel pnl)
-                {
-                    if(pnl.Tag != null && pnl.Tag.ToString() == "panelControlBar")
-                        pnl.BackColor = theme.TopPanelColor;
-                    else
-                        pnl.BackColor = theme.BackColor;
-                }
-
-                if (control is Label lbl)
-                    lbl.ForeColor = theme.FontColor;
-
-                if (control is IconButton btn)
-                {
-                    if (btn.Tag != null && btn.Tag.ToString() == "button")
-                    {
-                        btn.BackColor = theme.PointColor;
-                        //btn.ForeColor = theme.FontColor;
-                    }
-
-                    btn.IconColor = theme.FontColor;
-                    btn.ForeColor = theme.FontColor;
-                }
-            }
+            _ = LoadModuleAsync("ucGeneral", () => new ucGeneral());
+            iconButtonGeneral.BackColor = _currentTheme.PointColor;
         }
+       
 
-        public static IEnumerable<Control> GetAllControls(Control parent)
-        {
-            foreach (Control child in parent.Controls)
-            {
-                yield return child;
-
-                foreach (Control grandChild in GetAllControls(child))
-                {
-                    yield return grandChild;
-                }
-            }
-        }
-
-        private void formPopup_Resize(object sender, EventArgs e)
+        private void formEditForm_Resize(object sender, EventArgs e)
         {
             AdjustForm();
         }
 
+        int borderSize = 2;
         private void AdjustForm()
         {
             switch (this.WindowState)
@@ -186,18 +213,82 @@ namespace BaseForm.Modules
             }
         }
 
-        private void iconButtonNo_Click(object sender, EventArgs e)
+        #endregion
+
+
+        #region 메뉴 버튼 클릭 처리
+
+        private async void iconButtonGeneral_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
+            await HandleMenuButtonClick(iconButtonGeneral, "ucGeneral", () => new ucGeneral());
+        }
+
+        private async void iconButtonColor_Click(object sender, EventArgs e)
+        {
+            await HandleMenuButtonClick(iconButtonColor, "ucThemeColors", () =>
+            {
+                var ucTheme = new ucThemeColors(_currentTheme);
+                ucTheme.ThemeChanged += theme =>
+                {
+                    ThemeColor = theme;
+                    ThemeChanged?.Invoke(theme);
+                };
+                return ucTheme;
+            });
+        }
+
+        private async void iconButtonMenu_Click(object sender, EventArgs e)
+        {
+            await HandleMenuButtonClick(iconButtonMenu, "ucDesign", () => new ucDesign());
+        }
+
+        private async Task HandleMenuButtonClick(IconButton clickedButton, string moduleKey, Func<UserControl> moduleFactory)
+        {
+            ResetMenuButtonColors();
+            clickedButton.BackColor = _currentTheme.PointColor;
+            await LoadModuleAsync(moduleKey, moduleFactory);
+        }
+
+        private void ResetMenuButtonColors()
+        {
+            foreach (var control in GetAllControls(this.panelMenu))
+            {
+                if (control is IconButton btn)
+                    btn.BackColor = menuBackColor;
+            }
+        }
+
+        private async Task LoadModuleAsync(string moduleKey, Func<UserControl> moduleFactory)
+        {
+            if (!loadedModules.TryGetValue(moduleKey, out var existingModule))
+            {
+                existingModule = moduleFactory();
+                loadedModules[moduleKey] = existingModule;
+            }
+
+            if (panelControl.Controls.Count == 0 || panelControl.Controls[0].GetType() != existingModule.GetType())
+            {
+                panelControl.Controls.Clear();
+                panelControl.Controls.Add(existingModule);
+                existingModule.Dock = DockStyle.Fill;
+            }
+
+            ApplyTheme(_currentTheme);
+            await Task.CompletedTask;
+        }
+
+        private void iconButtonSave_Click(object sender, EventArgs e)
+        {
+            //this.DialogResult = DialogResult.OK;
+            //this.Close();
+        }
+
+        private void iconButtonSaveClose_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
-
-        private void iconButtonOK_Click(object sender, EventArgs e)
-        {
-            //ResultText = txtInput.Text;  // 사용자가 입력한 텍스트
-            this.DialogResult = DialogResult.OK; // OK 결과 반환
-            this.Close();
-        }
+        #endregion
     }
 }

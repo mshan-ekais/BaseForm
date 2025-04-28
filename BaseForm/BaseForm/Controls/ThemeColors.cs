@@ -78,7 +78,7 @@ namespace BaseForm.Modules
             TopPanelColor = Color.LightGray,
             MenuPanelColor = Color.Gainsboro,
             BorderColor = Color.Black,
-            PointColor = Color.Gray,
+            PointColor = Color.FromArgb(255, 69, 58),
             FontColor = Color.Black,
             IconColor = Color.Black,
             ButtonColor = Color.LightGray,
@@ -108,7 +108,7 @@ namespace BaseForm.Modules
             FontColor = Color.White,
             IconColor = Color.White,
             ButtonColor = Color.FromArgb(60, 80, 120),
-            Image = Properties.Resources.kais_white
+            Image = Properties.Resources.kais_white_red
         };
     }
 }

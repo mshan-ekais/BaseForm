@@ -40,7 +40,9 @@
     <Reference Include="DevExpress.Data.v24.2, Version=24.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Drawing.v24.2, Version=24.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Printing.v24.2.Core, Version=24.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Sparkline.v24.2.Core, Version=24.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Utils.v24.2, Version=24.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v24.2, Version=24.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="FontAwesome.Sharp, Version=5.15.4.0, Culture=neutral, PublicKeyToken=d16d1e4e568ec10f, processorArchitecture=MSIL">
       <HintPath>..\packages\FontAwesome.Sharp.5.15.4\lib\net472\FontAwesome.Sharp.dll</HintPath>
     </Reference>
@@ -49,6 +51,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
@@ -70,11 +73,41 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\formEditForm.cs">
+    <Compile Include="Modules\FormEdit\formEditForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\formEditForm.Designer.cs">
+    <Compile Include="Modules\FormEdit\formEditForm.Designer.cs">
       <DependentUpon>formEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\FormEdit\ucColorPalette.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modules\FormEdit\ucColorPalette.Designer.cs">
+      <DependentUpon>ucColorPalette.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\FormEdit\ucDesign.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modules\FormEdit\ucDesign.Designer.cs">
+      <DependentUpon>ucDesign.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\FormEdit\ucGeneral.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modules\FormEdit\ucGeneral.Designer.cs">
+      <DependentUpon>ucGeneral.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\FormEdit\ucSamplePreview.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modules\FormEdit\ucSamplePreview.Designer.cs">
+      <DependentUpon>ucSamplePreview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\FormEdit\ucThemeColors.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modules\FormEdit\ucThemeColors.Designer.cs">
+      <DependentUpon>ucThemeColors.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\formPopup.cs">
       <SubType>Form</SubType>
@@ -82,7 +115,7 @@
     <Compile Include="Modules\formPopup.Designer.cs">
       <DependentUpon>formPopup.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\ThemeColors.cs" />
+    <Compile Include="Controls\ThemeColors.cs" />
     <Compile Include="Modules\ucDataLog.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -103,11 +136,29 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleCode\formSample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SampleCode\formSample.Designer.cs">
+      <DependentUpon>formSample.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\formEditForm.resx">
+    <EmbeddedResource Include="Modules\FormEdit\formEditForm.resx">
       <DependentUpon>formEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\FormEdit\ucColorPalette.resx">
+      <DependentUpon>ucColorPalette.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\FormEdit\ucDesign.resx">
+      <DependentUpon>ucDesign.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\FormEdit\ucGeneral.resx">
+      <DependentUpon>ucGeneral.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\FormEdit\ucThemeColors.resx">
+      <DependentUpon>ucThemeColors.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\formPopup.resx">
       <DependentUpon>formPopup.cs</DependentUpon>
@@ -127,10 +178,14 @@
     <EmbeddedResource Include="Modules\ucSetting.resx">
       <DependentUpon>ucSetting.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SampleCode\formSample.resx">
+      <DependentUpon>formSample.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
