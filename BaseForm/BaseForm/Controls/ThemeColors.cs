@@ -20,6 +20,19 @@ namespace BaseForm.Modules
         public Color ButtonColor { get; set; }
         public Image Image { get; set; }
 
+        public static ThemeColors KaisStyle => new ThemeColors
+        {
+            BackColor = Color.FromArgb(10, 25, 50),
+            TopPanelColor = Color.FromArgb(15, 35, 65),
+            MenuPanelColor = Color.FromArgb(20, 45, 80),
+            BorderColor = Color.WhiteSmoke,
+            PointColor = Color.FromArgb(255, 69, 58),
+            FontColor = Color.White,
+            IconColor = Color.White,
+            ButtonColor = Color.FromArgb(60, 80, 120),
+            Image = Properties.Resources.kais_white_red
+        };
+
         public static ThemeColors Dark => new ThemeColors
         {
             BackColor = Color.FromArgb(48, 48, 48),
@@ -46,31 +59,46 @@ namespace BaseForm.Modules
             Image = Properties.Resources.kais_basic
         };
 
-        public static ThemeColors LovelyStyle => new ThemeColors
+
+        public static ThemeColors ModernBlue => new ThemeColors
         {
-            BackColor = Color.FromArgb(255, 240, 245), // 라이트 핑크
-            TopPanelColor = Color.FromArgb(255, 182, 193), // 라이트 핑크2
-            MenuPanelColor = Color.FromArgb(255, 228, 225), // 미스트로즈
-            BorderColor = Color.DeepPink,
-            PointColor = Color.HotPink,
-            FontColor = Color.DarkRed,
-            IconColor = Color.DeepPink,
-            ButtonColor = Color.FromArgb(255, 182, 193),
-            Image = Properties.Resources.kais_white
+            BackColor = Color.FromArgb(240, 248, 255), // AliceBlue
+            TopPanelColor = Color.FromArgb(100, 149, 237), // CornflowerBlue
+            MenuPanelColor = Color.FromArgb(70, 130, 180), // SteelBlue
+            BorderColor = Color.FromArgb(25, 25, 112), // MidnightBlue
+            PointColor = Color.FromArgb(30, 144, 255), // DodgerBlue
+            FontColor = Color.Black,
+            IconColor = Color.Black,
+            ButtonColor = Color.FromArgb(100, 149, 237),
+            Image = Properties.Resources.kais_basic
         };
 
-        public static ThemeColors VisualStudio2019Style => new ThemeColors
+        public static ThemeColors CozyOrange => new ThemeColors
         {
-            BackColor = Color.FromArgb(37, 37, 38),
-            TopPanelColor = Color.FromArgb(45, 45, 48),
-            MenuPanelColor = Color.FromArgb(51, 51, 55),
-            BorderColor = Color.DimGray,
-            PointColor = Color.FromArgb(0, 122, 204),
-            FontColor = Color.White,
-            IconColor = Color.LightGray,
-            ButtonColor = Color.FromArgb(63, 63, 70),
-            Image = Properties.Resources.kais_white
+            BackColor = Color.FromArgb(255, 248, 220), // Cornsilk
+            TopPanelColor = Color.FromArgb(255, 165, 0), // Orange
+            MenuPanelColor = Color.FromArgb(255, 200, 120), // 연한 오렌지
+            BorderColor = Color.FromArgb(255, 140, 0), // DarkOrange
+            PointColor = Color.FromArgb(255, 99, 71), // Tomato
+            FontColor = Color.Black,
+            IconColor = Color.Black,
+            ButtonColor = Color.FromArgb(255, 165, 0),
+            Image = Properties.Resources.kais_basic
         };
+
+        public static ThemeColors ControlStyle => new ThemeColors
+        {
+            BackColor = SystemColors.Control, // Windows 기본 컨트롤 배경
+            TopPanelColor = SystemColors.ControlDark, // 약간 어두운
+            MenuPanelColor = SystemColors.ControlLight, // 약간 밝은
+            BorderColor = SystemColors.ActiveBorder, // 시스템 활성 테두리
+            PointColor = Color.DeepSkyBlue, // 확실하게 튀는 포인트
+            FontColor = SystemColors.ControlText, // 일반 글자색
+            IconColor = SystemColors.ControlText,
+            ButtonColor = SystemColors.ControlDarkDark,
+            Image = Properties.Resources.kais_basic
+        };
+
 
         public static ThemeColors BasicStyle => new ThemeColors
         {
@@ -98,17 +126,5 @@ namespace BaseForm.Modules
             Image = Properties.Resources.kais_black
         };
 
-        public static ThemeColors NavyRedStyle => new ThemeColors
-        {
-            BackColor = Color.FromArgb(10, 25, 50),
-            TopPanelColor = Color.FromArgb(15, 35, 65),
-            MenuPanelColor = Color.FromArgb(20, 45, 80),
-            BorderColor = Color.WhiteSmoke,
-            PointColor = Color.FromArgb(255, 69, 58),
-            FontColor = Color.White,
-            IconColor = Color.White,
-            ButtonColor = Color.FromArgb(60, 80, 120),
-            Image = Properties.Resources.kais_white_red
-        };
     }
 }

@@ -97,6 +97,12 @@
     <Compile Include="Modules\FormEdit\ucGeneral.Designer.cs">
       <DependentUpon>ucGeneral.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\FormEdit\ucMenuVertical.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modules\FormEdit\ucMenuVertical.Designer.cs">
+      <DependentUpon>ucMenuVertical.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modules\FormEdit\ucSamplePreview.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -156,6 +162,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\FormEdit\ucGeneral.resx">
       <DependentUpon>ucGeneral.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\FormEdit\ucMenuVertical.resx">
+      <DependentUpon>ucMenuVertical.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\FormEdit\ucThemeColors.resx">
       <DependentUpon>ucThemeColors.cs</DependentUpon>

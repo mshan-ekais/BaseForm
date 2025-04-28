@@ -15,13 +15,9 @@ namespace BaseForm
 {
     public partial class BorderlessMainForm : Form
     {
-        //Fields
         private int borderSize = 2;
         private Size formSize;
-
-        private ThemeColors currentTheme = ThemeColors.NavyRedStyle;
-        private Panel overlayPanel;
-
+        private ThemeColors currentTheme = ThemeColors.KaisStyle;
         private Dictionary<string, UserControl> loadedModules = new Dictionary<string, UserControl>();
 
 
@@ -29,25 +25,10 @@ namespace BaseForm
         public BorderlessMainForm()
         {
             InitializeComponent();
-            //CollaseMenu();
             this.Padding = new Padding(borderSize); //Border size
-            //CreateOverlay();
-            //ColorChanged();
+
             ApplyTheme(currentTheme);
         }
-
-        private void CreateOverlay()
-        {
-            overlayPanel = new Panel
-            {
-                BackColor = Color.FromArgb(120, 0, 0, 0), // 반투명 검정
-                Dock = DockStyle.Fill,
-                Visible = false
-            };
-            this.Controls.Add(overlayPanel);
-            overlayPanel.BringToFront();
-        }
-
 
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
         private extern static void ReleaseCapture();
@@ -73,19 +54,6 @@ namespace BaseForm
             this.panelMenu.BackColor = theme.MenuPanelColor;
             this.panelLeft.BackColor = theme.PointColor;
             this.pictureBoxLogo.Image = theme.Image;
-
-
-            //if (loadedModules.TryGetValue("ucEditForm", out var ctrl) && ctrl is ucEditForm editForm)
-            //{
-            //    editForm.ThemeColor = currentTheme;
-            //}
-
-
-            //if (loadedModules.TryGetValue("ucEditForm", out var ctrl) && ctrl is ucEditForm editForm)
-            //{
-            //    editForm.FontColor = theme.FontColor;
-            //}
-
 
             foreach (var control in GetAllControls(this))
             {
@@ -131,8 +99,6 @@ namespace BaseForm
         private void panelControlBar_MouseDown(object sender, MouseEventArgs e)
         {
             MakeFormDraggable(panelTopBar);
-            //ReleaseCapture();
-            //SendMessage(this.Handle, 0x112, 0xf012, 0);
         }
 
 
@@ -369,11 +335,16 @@ namespace BaseForm
                 editForm.ThemeColor = currentTheme;
                 editForm.ThemeChanged += theme =>
                 {
-                    this.ApplyTheme(theme); // MainForm에 테마 적용
+                    this.ApplyTheme(theme);
                 };
 
-                var result = editForm.ShowDialog(); // 모달로 열기
+                editForm.MenuStyleChanged += style =>
+                {
+                    this.SetMenuPosition(style);
+                };
 
+
+                var result = editForm.ShowDialog();
                 if (result == DialogResult.OK)
                 {
                 }
@@ -382,6 +353,15 @@ namespace BaseForm
                 }
             }
         }
+
+
+        public void SetMenuPosition(DockStyle dockStyle)
+        {
+            panelMenu.Dock = dockStyle;
+            panelMenu.Refresh();
+        }
+
+
 
         private void iconButtonClose_Click(object sender, EventArgs e)
         {

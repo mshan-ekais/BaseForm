@@ -17,8 +17,13 @@ namespace BaseForm.Modules
     {
         private Dictionary<string, UserControl> loadedModules = new Dictionary<string, UserControl>();
         public event Action<ThemeColors> ThemeChanged;
+        public event Action<DockStyle> MenuStyleChanged;
+
         private ThemeColors _currentTheme;
+        private DockStyle _currentMenuStyle;
+
         private Color menuBackColor;
+        private IconButton _lastClickedButton;
         private const int BorderSize = 2;
 
         public formEditForm()
@@ -34,6 +39,16 @@ namespace BaseForm.Modules
             {
                 _currentTheme = value;
                 ApplyTheme(_currentTheme);
+            }
+        }
+
+        public DockStyle MenuStyle
+        {
+            get => _currentMenuStyle;
+            set
+            {
+                _currentMenuStyle = value;
+                //ApplyTheme(_currentTheme);
             }
         }
 
@@ -239,13 +254,23 @@ namespace BaseForm.Modules
 
         private async void iconButtonMenu_Click(object sender, EventArgs e)
         {
-            await HandleMenuButtonClick(iconButtonMenu, "ucDesign", () => new ucDesign());
+            await HandleMenuButtonClick(iconButtonMenu, "ucDesign", () =>
+            {
+                var ucDesign = new ucDesign(_currentMenuStyle);
+                ucDesign.MenuStyleChanged += dockStyle =>
+                {
+                    MenuStyle = dockStyle;
+                    MenuStyleChanged?.Invoke(dockStyle);
+                };
+                return ucDesign;
+            });
         }
 
         private async Task HandleMenuButtonClick(IconButton clickedButton, string moduleKey, Func<UserControl> moduleFactory)
         {
             ResetMenuButtonColors();
             clickedButton.BackColor = _currentTheme.PointColor;
+            _lastClickedButton = clickedButton;
             await LoadModuleAsync(moduleKey, moduleFactory);
         }
 
@@ -256,6 +281,12 @@ namespace BaseForm.Modules
                 if (control is IconButton btn)
                     btn.BackColor = menuBackColor;
             }
+        }
+
+        private void HighlightSelectedMenuButton()
+        {
+            if (_lastClickedButton != null)
+                _lastClickedButton.BackColor = _currentTheme.PointColor;
         }
 
         private async Task LoadModuleAsync(string moduleKey, Func<UserControl> moduleFactory)
@@ -274,6 +305,7 @@ namespace BaseForm.Modules
             }
 
             ApplyTheme(_currentTheme);
+            HighlightSelectedMenuButton();
             await Task.CompletedTask;
         }
 
