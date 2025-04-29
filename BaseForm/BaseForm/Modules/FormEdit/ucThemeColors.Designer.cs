@@ -107,11 +107,11 @@ namespace BaseForm.Modules.FormEdit
             this.iconButtonApply.Tag = "button";
             this.iconButtonApply.Text = "Apply";
             this.iconButtonApply.UseVisualStyleBackColor = false;
-            this.iconButtonApply.Visible = false;
             this.iconButtonApply.Click += new System.EventHandler(this.iconButtonApply_Click);
             // 
             // ucColorPalatte
             // 
+            this.ucColorPalatte.AutoScroll = true;
             this.ucColorPalatte.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ucColorPalatte.Location = new System.Drawing.Point(18, 68);
             this.ucColorPalatte.Name = "ucColorPalatte";

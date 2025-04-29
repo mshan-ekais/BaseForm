@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static BaseForm.Controls.MenuManager;
 
 namespace BaseForm
 {
@@ -17,16 +18,20 @@ namespace BaseForm
     public partial class BorderlessMainForm : Form
     {
         private int borderSize = 2;
+        
         private Size formSize;
         private ThemeColors currentTheme = ThemeColors.KaisStyle;
+        private DockStyle currentDockStyle = DockStyle.Top;
         private Dictionary<string, UserControl> loadedModules = new Dictionary<string, UserControl>();
+
+        private ucMenuVertical ucMenuVertical;
+        private ucMenuHorizontal ucMenuHorizontal;
 
         //Constructor
         public BorderlessMainForm()
         {
             InitializeComponent();
             InitializeMenu();
-            ApplyTheme(currentTheme);
         }
 
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
@@ -38,16 +43,49 @@ namespace BaseForm
 
         private void InitializeMenu()
         {
+            ucMenuVertical = new ucMenuVertical();
+            ucMenuVertical.Dock = DockStyle.Left;
+
             ucMenuVertical.CollapseToggled += OnMenuCollapseToggled;
             ucMenuVertical.MenuButtonClicked += OnMenuButtonClicked;
 
-            OnMenuButtonClicked(ucMenuVertical.MenuButtonType.Home);
+            this.Controls.Add(ucMenuVertical);
+            ucMenuVertical.BringToFront();
+
+
+            ucMenuHorizontal = new ucMenuHorizontal();
+            ucMenuHorizontal.Dock = DockStyle.Left;
+            //ucMenuHorizontal.CollapseToggled += OnMenuCollapseToggled;
+            ucMenuHorizontal.MenuButtonClicked += OnMenuButtonClicked;
+
+            this.Controls.Add(ucMenuHorizontal);
+            ucMenuHorizontal.BringToFront();
+            ucMenuHorizontal.Visible = true;
+
+            switch (currentDockStyle)
+            {
+                case DockStyle.Left:
+                    break;
+                case DockStyle.Top:
+                    break;
+                case DockStyle.Right:
+                    break;
+                case DockStyle.Bottom:
+                    break;
+            }
+
         }
 
-        private void Form_Load(object sender, EventArgs e)
+        private async void Form_Load(object sender, EventArgs e)
         {
             this.formSize = this.ClientSize;
             this.Padding = new Padding(borderSize); //Border size
+
+            ApplyTheme(currentTheme);
+            ApplyDockStyle(currentDockStyle);
+
+            await Task.Delay(1);
+            OnMenuButtonClicked(MenuButtonType.Home);
         }
 
 
@@ -57,27 +95,28 @@ namespace BaseForm
             this.BackColor = theme.BackColor;
             this.panelTopBar.BackColor = theme.TopPanelColor;
 
-            this.ucMenuVertical.BackColor = theme.MenuPanelColor;
-            this.ucMenuVertical.panelLeft.BackColor = theme.PointColor;
-            this.ucMenuVertical.pictureBoxLogo.Image = theme.Image;
+            ucMenuVertical.BackColor = theme.MenuPanelColor;
+            ucMenuVertical.panelBar.BackColor = theme.PointColor;
+            ucMenuVertical.pictureBoxLogo.Image = theme.Image;
+
+            ucMenuHorizontal.BackColor = theme.MenuPanelColor;
+            ucMenuHorizontal.panelBar.BackColor = theme.PointColor;
+            ucMenuHorizontal.pictureBoxLogo.Image = theme.Image;
 
             foreach (var control in GetAllControls(this))
             {
                 if (control is IconButton btn)
                 {
-                    if (btn.Tag != null && btn.Tag.ToString() == "button")
-                    {
-                        btn.BackColor = theme.ButtonColor;
-                    }
-                    btn.IconColor = theme.IconColor;
-                    btn.ForeColor = theme.FontColor;
+                    //if (btn.Tag is ControlType controlType && controlType == ControlType.Button)
+                    //{
+                    //    btn.BackColor = theme.ButtonColor;
+                    //}
+                    //btn.IconColor = theme.IconColor;
+                    //btn.ForeColor = theme.FontColor;
                 }
-
                 control.ForeColor = theme.FontColor;
-                
             }
         }
-
 
         public static IEnumerable<Control> GetAllControls(Control parent)
         {
@@ -247,7 +286,7 @@ namespace BaseForm
                 this.ucMenuVertical.pictureBoxLogo.Visible = false;
                 this.ucMenuVertical.iconButtonMenu.Dock = DockStyle.Top;
 
-                foreach (Button menuButton in this.ucMenuVertical.Controls.OfType<Button>())
+                foreach (Button menuButton in GetCollapseMenuButtons(this.ucMenuVertical))
                 {
                     menuButton.Text = "";
                     menuButton.ImageAlign = ContentAlignment.MiddleCenter;
@@ -260,7 +299,7 @@ namespace BaseForm
                 this.ucMenuVertical.pictureBoxLogo.Visible = true;
                 this.ucMenuVertical.iconButtonMenu.Dock = DockStyle.Top;
 
-                foreach (Button menuButton in this.ucMenuVertical.Controls.OfType<Button>())
+                foreach (Button menuButton in GetCollapseMenuButtons(this.ucMenuVertical))
                 {
                     if (menuButton.Tag.ToString() == "menu")
                     {
@@ -277,33 +316,74 @@ namespace BaseForm
             }
         }
 
-
-        private async void OnMenuButtonClicked(ucMenuVertical.MenuButtonType buttonType)
+        private IEnumerable<Button> GetCollapseMenuButtons(Control parent)
         {
-            IconButton selectedButton = ucMenuVertical.GetButton(buttonType);
+            foreach (Control control in parent.Controls)
+            {
+                if (control is Button btn)
+                    yield return btn;
 
-            ucMenuVertical.PanelLeft.Height = selectedButton.Height;
-            ucMenuVertical.PanelLeft.Top = selectedButton.Top;
+                if (control.HasChildren)
+                {
+                    foreach (var childButton in GetCollapseMenuButtons(control))
+                        yield return childButton;
+                }
+            }
+        }
 
-            // UserControl 로딩
+        private int GetRelativePosition(Control button, Control container, bool isVertical)
+        {
+            var btnScreenPos = button.Parent.PointToScreen(button.Location);
+            var containerScreenPos = container.PointToScreen(Point.Empty);
+
+            return isVertical ? (btnScreenPos.Y - containerScreenPos.Y)
+                              : (btnScreenPos.X - containerScreenPos.X);
+        }
+
+        private async void OnMenuButtonClicked(MenuButtonType buttonType)
+        {
+            IconButton selectedButton;
+
+            if (currentDockStyle == DockStyle.Left || currentDockStyle == DockStyle.Right)
+            {
+                selectedButton = ucMenuVertical.GetButton(buttonType);
+
+                int relativeTop = GetRelativePosition(selectedButton, ucMenuVertical, true);
+
+                ucMenuVertical.PanelLeft.Top = relativeTop;
+                ucMenuVertical.PanelLeft.Height = selectedButton.Height;
+            }
+            else if (currentDockStyle == DockStyle.Top || currentDockStyle == DockStyle.Bottom)
+            {
+                selectedButton = ucMenuHorizontal.GetButton(buttonType);
+
+                int relativeLeft = GetRelativePosition(selectedButton, ucMenuHorizontal, false);
+
+                ucMenuHorizontal.PanelBar.Left = relativeLeft;
+                ucMenuHorizontal.PanelBar.Width = selectedButton.Width;
+            }
+            else
+                return;
+
+
             switch (buttonType)
             {
-                case ucMenuVertical.MenuButtonType.Home:
+                case MenuButtonType.Home:
                     await LoadModuleAsync("ucHome", () => new ucHome());
                     break;
-                case ucMenuVertical.MenuButtonType.Measure:
+                case MenuButtonType.Measure:
                     await LoadModuleAsync("ucMeasurement", () => new ucMeasurement());
                     break;
-                case ucMenuVertical.MenuButtonType.DataLog:
+                case MenuButtonType.DataLog:
                     await LoadModuleAsync("ucDataLog", () => new ucDataLog());
                     break;
-                case ucMenuVertical.MenuButtonType.Setting:
+                case MenuButtonType.Setting:
                     await LoadModuleAsync("ucSetting", () => new ucSetting());
                     break;
-                case ucMenuVertical.MenuButtonType.EditForm:
+                case MenuButtonType.EditForm:
                     iconButtonIEditForm_Click();
                     break;
-                case ucMenuVertical.MenuButtonType.Close:
+                case MenuButtonType.Close:
                     iconButtonClose_Click();
                     break;
             }
@@ -344,9 +424,10 @@ namespace BaseForm
                     this.ApplyTheme(theme);
                 };
 
-                editForm.MenuStyleChanged += style =>
+                editForm.DockMenuStyle = currentDockStyle;
+                editForm.DockStyleChanged += style =>
                 {
-                    this.SetMenuPosition(style);
+                    this.ApplyDockStyle(style);
                 };
 
 
@@ -361,12 +442,43 @@ namespace BaseForm
         }
 
 
-        public void SetMenuPosition(DockStyle dockStyle)
+        public void ApplyDockStyle(DockStyle dockStyle)
         {
-            ucMenuVertical.Dock = dockStyle;
-            ucMenuVertical.Refresh();
+            currentDockStyle = dockStyle;
+
+            if (dockStyle == DockStyle.Left || dockStyle == DockStyle.Right)
+            {
+                ucMenuVertical.Dock = dockStyle;
+                ucMenuVertical.Visible = true;
+                ucMenuHorizontal.Visible = false;
+            }
+            else if (dockStyle == DockStyle.Top || dockStyle == DockStyle.Bottom)
+            {
+                ucMenuHorizontal.Dock = dockStyle;
+                ucMenuHorizontal.Visible = true;
+                ucMenuVertical.Visible = false;
+            }
+            else
+            {
+                return;
+            }
+
+            // 레이아웃 적용 이후 위치 재설정
+            this.BeginInvoke(new Action(FixPanelPosition));
+            
         }
 
+        private void FixPanelPosition()
+        {
+            if (currentDockStyle == DockStyle.Left || currentDockStyle == DockStyle.Right)
+            {
+                ucMenuVertical.PanelLeft.Top = GetRelativePosition(ucMenuVertical.iconButtonEditForm, ucMenuVertical, true);
+            }
+            else if (currentDockStyle == DockStyle.Top || currentDockStyle == DockStyle.Bottom)
+            {
+                ucMenuHorizontal.PanelBar.Left = GetRelativePosition(ucMenuHorizontal.iconButtonEditForm, ucMenuHorizontal, false);
+            }
+        }
 
 
         private void iconButtonClose_Click()

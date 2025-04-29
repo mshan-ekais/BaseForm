@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace BaseForm.Modules
 {
+    public enum ControlType
+    {
+        None,
+        Button,
+        Panel,
+        Label
+    }
 
     public struct ThemeColors
     {
@@ -83,7 +90,7 @@ namespace BaseForm.Modules
             FontColor = Color.Black,
             IconColor = Color.Black,
             ButtonColor = Color.FromArgb(255, 165, 0),
-            Image = Properties.Resources.kais_basic
+            Image = Properties.Resources.kais_black
         };
 
         public static ThemeColors ControlStyle => new ThemeColors

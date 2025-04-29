@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,26 +13,24 @@ using static BaseForm.Controls.MenuManager;
 
 namespace BaseForm.Modules
 {
-    public partial class ucMenuVertical : UserControl
+    public partial class ucMenuHorizontal : UserControl
     {
-
         public event Action<MenuButtonType> MenuButtonClicked;
         public event Action CollapseToggled;
-        public Panel PanelLeft => panelBar;
+        public Panel PanelBar => panelBar;
         public Dictionary<MenuButtonType, IconButton> _buttonMap = new Dictionary<MenuButtonType, IconButton>();
 
-        public ucMenuVertical()
+        public ucMenuHorizontal()
         {
             InitializeComponent();
             InitializeMenu();
         }
 
-
         private void InitializeMenu()
         {
-            this.Dock = DockStyle.Left;
-            this.Width = 230;
-            this.panelPicture.Height = panelPicture.Width / 2;
+            this.Dock = DockStyle.Top;
+            this.Height = 85;
+            
 
             foreach (var item in MenuManager.MenuItems)
             {
@@ -42,8 +39,9 @@ namespace BaseForm.Modules
                 button.BringToFront();
             }
 
-            PanelLeft.BringToFront();
-            iconButtonMenu.Click += (s, e) => CollapseToggled?.Invoke();
+            this.Controls.Add(PanelBar);
+            PanelBar.BringToFront();
+            //iconButtonMenu.Click += (s, e) => CollapseToggled?.Invoke();
             iconButtonHome.Click += (s, e) => MenuButtonClicked?.Invoke(MenuButtonType.Home);
             iconButtonEditForm.Click += (s, e) => MenuButtonClicked?.Invoke(MenuButtonType.EditForm);
             iconButtonClose.Click += (s, e) => MenuButtonClicked?.Invoke(MenuButtonType.Close);
@@ -52,6 +50,8 @@ namespace BaseForm.Modules
             _buttonMap[MenuButtonType.EditForm] = iconButtonEditForm;
             _buttonMap[MenuButtonType.Close] = iconButtonClose;
         }
+
+
 
         private IconButton CloneButton(IconButton source)
         {
@@ -85,7 +85,7 @@ namespace BaseForm.Modules
             button.Text = item.Name;
             button.IconChar = item.Icon;
             button.Tag = item.Key;
-            button.Dock = DockStyle.Top;
+            button.Dock = DockStyle.Left;
 
             _buttonMap[item.ButtonType] = button;
 
@@ -93,7 +93,7 @@ namespace BaseForm.Modules
             return button;
         }
 
-     
+
         public IconButton GetButton(MenuButtonType buttonType)
         {
             if (_buttonMap.TryGetValue(buttonType, out var button))

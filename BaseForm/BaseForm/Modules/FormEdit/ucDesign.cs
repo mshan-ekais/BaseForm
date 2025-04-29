@@ -46,7 +46,7 @@ namespace BaseForm.Modules.FormEdit
 
         private void buttonBottom_Click(object sender, EventArgs e)
         {
-
+            MenuStyleChanged?.Invoke(DockStyle.Bottom);
         }
     }
 }

@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\helper.cs" />
+    <Compile Include="Controls\MenuManager.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,6 +130,12 @@
     <Compile Include="Modules\ucMeasurement.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Modules\ucMenuHorizontal.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modules\ucMenuHorizontal.Designer.cs">
+      <DependentUpon>ucMenuHorizontal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modules\ucMenuVertical.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -161,6 +168,9 @@
     <EmbeddedResource Include="Modules\FormEdit\ucGeneral.resx">
       <DependentUpon>ucGeneral.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modules\FormEdit\ucSamplePreview.resx">
+      <DependentUpon>ucSamplePreview.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modules\FormEdit\ucThemeColors.resx">
       <DependentUpon>ucThemeColors.cs</DependentUpon>
     </EmbeddedResource>
@@ -178,6 +188,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\ucMeasurement.resx">
       <DependentUpon>ucMeasurement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\ucMenuHorizontal.resx">
+      <DependentUpon>ucMenuHorizontal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\ucMenuVertical.resx">
       <DependentUpon>ucMenuVertical.cs</DependentUpon>

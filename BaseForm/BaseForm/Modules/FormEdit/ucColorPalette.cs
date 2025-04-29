@@ -16,6 +16,8 @@ namespace BaseForm.Modules.FormEdit
     {
         public ucColorPalatte()
         {
+            //base.OnLayout(e);
+
             this.HorizontalScroll.Visible = false;
             this.VerticalScroll.Visible = false;
             this.HorizontalScroll.Maximum = 0;
@@ -44,6 +46,16 @@ namespace BaseForm.Modules.FormEdit
                 }
             }
             return themes;
+        }
+
+        protected override void OnLayout(LayoutEventArgs e)
+        {
+            base.OnLayout(e);
+
+            this.HorizontalScroll.Visible = false;
+            this.VerticalScroll.Visible = false;
+            this.HorizontalScroll.Maximum = 0;
+            this.VerticalScroll.Maximum = 0;
         }
 
         public ThemeColors _currentTheme;

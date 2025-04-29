@@ -17,10 +17,10 @@ namespace BaseForm.Modules
     {
         private Dictionary<string, UserControl> loadedModules = new Dictionary<string, UserControl>();
         public event Action<ThemeColors> ThemeChanged;
-        public event Action<DockStyle> MenuStyleChanged;
+        public event Action<DockStyle> DockStyleChanged;
 
         private ThemeColors _currentTheme;
-        private DockStyle _currentMenuStyle;
+        private DockStyle _currentDockStyle;
 
         private Color menuBackColor;
         private IconButton _lastClickedButton;
@@ -29,6 +29,7 @@ namespace BaseForm.Modules
         public formEditForm()
         {
             InitializeComponent();
+            InitializeThemeColor();
         }
 
         #region Theme 설정 및 헬퍼 메서드
@@ -42,15 +43,16 @@ namespace BaseForm.Modules
             }
         }
 
-        public DockStyle MenuStyle
+        public DockStyle DockMenuStyle
         {
-            get => _currentMenuStyle;
+            get => _currentDockStyle;
             set
             {
-                _currentMenuStyle = value;
+                _currentDockStyle = value;
                 //ApplyTheme(_currentTheme);
             }
         }
+
 
         public static Color LightenColor(Color color, float amount = 0.2f)
         {
@@ -74,29 +76,36 @@ namespace BaseForm.Modules
             }
         }
 
+        private void InitializeThemeColor()
+        {
+            
+        }
+
+
         private void ApplyTheme(ThemeColors theme)
         {
             this.BackColor = theme.BorderColor;
             this.panelTopBar.BackColor = theme.TopPanelColor;
             menuBackColor = LightenColor(theme.MenuPanelColor, 0.1f);
             this.panelMenu.BackColor = menuBackColor;
+            this.panelControl.BackColor = LightenColor(theme.BackColor, 0.1f);
+            this.iconButtonColor.BackColor = theme.PointColor;
+
 
             foreach (var control in GetAllControls(this))
             {
-                if (control is Panel pnl && pnl.Tag?.ToString() == "panelControl")
-                    pnl.BackColor = LightenColor(theme.BackColor, 0.1f);
-
-                if (control is IconButton btn)
-                {
-                    if (btn.Tag != null && btn.Tag.ToString() == "button")
-                    {
-                        btn.BackColor = theme.ButtonColor;
-                    }
-                    btn.IconColor = theme.IconColor;
-                    btn.ForeColor = theme.FontColor;
-                }
-
                 control.ForeColor = theme.FontColor;
+
+            }
+
+            foreach (var control in GetAllControls(this.panelControl))
+            {
+                control.ForeColor = theme.FontColor;
+
+                if (control is IconButton ibtn)
+                    ibtn.BackColor = theme.PointColor;
+                else if (control is Button btn)
+                    btn.BackColor = theme.PointColor;
             }
 
             foreach (var control in GetAllControls(this.panelMenu))
@@ -105,12 +114,11 @@ namespace BaseForm.Modules
                     btn.BackColor = menuBackColor;
             }
 
-
             if (panelControl.Controls.Count > 0)
             {
                 var currentControl = panelControl.Controls[0];
                 if (currentControl is ucThemeColors)
-                    iconButtonColor.BackColor = _currentTheme.PointColor;
+                    iconButtonColor.BackColor = theme.PointColor;
             }
         }
 
@@ -256,11 +264,11 @@ namespace BaseForm.Modules
         {
             await HandleMenuButtonClick(iconButtonMenu, "ucDesign", () =>
             {
-                var ucDesign = new ucDesign(_currentMenuStyle);
+                var ucDesign = new ucDesign(_currentDockStyle);
                 ucDesign.MenuStyleChanged += dockStyle =>
                 {
-                    MenuStyle = dockStyle;
-                    MenuStyleChanged?.Invoke(dockStyle);
+                    DockMenuStyle = dockStyle;
+                    DockStyleChanged?.Invoke(dockStyle);
                 };
                 return ucDesign;
             });

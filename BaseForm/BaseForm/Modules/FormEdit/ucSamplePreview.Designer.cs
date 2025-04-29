@@ -29,8 +29,16 @@ namespace BaseForm.Modules.FormEdit
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // ucSamplePreview
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Name = "ucSamplePreview";
+            this.Size = new System.Drawing.Size(948, 537);
+            this.ResumeLayout(false);
+
         }
 
         #endregion

@@ -34,17 +34,16 @@ namespace BaseForm
             this.iconButtonWindowMin = new FontAwesome.Sharp.IconButton();
             this.iconButtonWindowMax = new FontAwesome.Sharp.IconButton();
             this.iconButtonWindowClose = new FontAwesome.Sharp.IconButton();
-            this.ucMenuVertical = new BaseForm.Modules.ucMenuVertical();
             this.panelTopBar.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelControl
             // 
             this.panelControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl.Location = new System.Drawing.Point(230, 46);
+            this.panelControl.Location = new System.Drawing.Point(0, 46);
             this.panelControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panelControl.Name = "panelControl";
-            this.panelControl.Size = new System.Drawing.Size(1249, 833);
+            this.panelControl.Size = new System.Drawing.Size(1479, 833);
             this.panelControl.TabIndex = 8;
             this.panelControl.Resize += new System.EventHandler(this.Form1_Resize);
             // 
@@ -112,21 +111,12 @@ namespace BaseForm
             this.iconButtonWindowClose.UseVisualStyleBackColor = false;
             this.iconButtonWindowClose.Click += new System.EventHandler(this.iconButtonWindowClose_Click);
             // 
-            // ucMenuVertical
-            // 
-            this.ucMenuVertical.Dock = System.Windows.Forms.DockStyle.Left;
-            this.ucMenuVertical.Location = new System.Drawing.Point(0, 46);
-            this.ucMenuVertical.Name = "ucMenuVertical";
-            this.ucMenuVertical.Size = new System.Drawing.Size(230, 833);
-            this.ucMenuVertical.TabIndex = 0;
-            // 
             // BorderlessMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1479, 879);
             this.Controls.Add(this.panelControl);
-            this.Controls.Add(this.ucMenuVertical);
             this.Controls.Add(this.panelTopBar);
             this.Name = "BorderlessMainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -144,7 +134,6 @@ namespace BaseForm
         private FontAwesome.Sharp.IconButton iconButtonWindowMax;
         private FontAwesome.Sharp.IconButton iconButtonWindowClose;
         private System.Windows.Forms.Panel panelTopBar;
-        private Modules.ucMenuVertical ucMenuVertical;
     }
 }
 
