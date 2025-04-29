@@ -1,5 +1,5 @@
 ﻿
-namespace BaseForm.Modules.FormEdit
+namespace BaseForm.Modules
 {
     partial class ucMenuVertical
     {
@@ -30,7 +30,6 @@ namespace BaseForm.Modules.FormEdit
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucMenuVertical));
-            this.panelMenu = new System.Windows.Forms.Panel();
             this.panelLeft = new System.Windows.Forms.Panel();
             this.iconButtonIEditForm = new FontAwesome.Sharp.IconButton();
             this.iconButtonClose = new FontAwesome.Sharp.IconButton();
@@ -39,37 +38,16 @@ namespace BaseForm.Modules.FormEdit
             this.iconButtonMeasure = new FontAwesome.Sharp.IconButton();
             this.iconButtonHome = new FontAwesome.Sharp.IconButton();
             this.iconButtonMenu = new FontAwesome.Sharp.IconButton();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
-            this.panelMenu.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.panelPicture = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
+            this.panelPicture.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panelMenu
-            // 
-            this.panelMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(44)))), ((int)(((byte)(55)))));
-            this.panelMenu.Controls.Add(this.panelLeft);
-            this.panelMenu.Controls.Add(this.iconButtonIEditForm);
-            this.panelMenu.Controls.Add(this.iconButtonClose);
-            this.panelMenu.Controls.Add(this.iconButtonSetting);
-            this.panelMenu.Controls.Add(this.iconButtonDataLog);
-            this.panelMenu.Controls.Add(this.iconButtonMeasure);
-            this.panelMenu.Controls.Add(this.iconButtonHome);
-            this.panelMenu.Controls.Add(this.iconButtonMenu);
-            this.panelMenu.Controls.Add(this.panel1);
-            this.panelMenu.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelMenu.Location = new System.Drawing.Point(0, 0);
-            this.panelMenu.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.panelMenu.Name = "panelMenu";
-            this.panelMenu.Padding = new System.Windows.Forms.Padding(0, 0, 0, 15);
-            this.panelMenu.Size = new System.Drawing.Size(233, 864);
-            this.panelMenu.TabIndex = 7;
             // 
             // panelLeft
             // 
             this.panelLeft.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(144)))), ((int)(((byte)(217)))));
-            this.panelLeft.Location = new System.Drawing.Point(0, 173);
+            this.panelLeft.Location = new System.Drawing.Point(0, 160);
             this.panelLeft.Name = "panelLeft";
             this.panelLeft.Size = new System.Drawing.Size(10, 54);
             this.panelLeft.TabIndex = 0;
@@ -86,10 +64,10 @@ namespace BaseForm.Modules.FormEdit
             this.iconButtonIEditForm.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconButtonIEditForm.IconSize = 30;
             this.iconButtonIEditForm.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.iconButtonIEditForm.Location = new System.Drawing.Point(0, 741);
+            this.iconButtonIEditForm.Location = new System.Drawing.Point(0, 728);
             this.iconButtonIEditForm.Name = "iconButtonIEditForm";
             this.iconButtonIEditForm.Padding = new System.Windows.Forms.Padding(30, 10, 0, 10);
-            this.iconButtonIEditForm.Size = new System.Drawing.Size(233, 54);
+            this.iconButtonIEditForm.Size = new System.Drawing.Size(229, 54);
             this.iconButtonIEditForm.TabIndex = 16;
             this.iconButtonIEditForm.Tag = "Edit Form";
             this.iconButtonIEditForm.Text = "Edit Form";
@@ -109,10 +87,10 @@ namespace BaseForm.Modules.FormEdit
             this.iconButtonClose.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconButtonClose.IconSize = 30;
             this.iconButtonClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.iconButtonClose.Location = new System.Drawing.Point(0, 795);
+            this.iconButtonClose.Location = new System.Drawing.Point(0, 782);
             this.iconButtonClose.Name = "iconButtonClose";
             this.iconButtonClose.Padding = new System.Windows.Forms.Padding(30, 10, 0, 10);
-            this.iconButtonClose.Size = new System.Drawing.Size(233, 54);
+            this.iconButtonClose.Size = new System.Drawing.Size(229, 54);
             this.iconButtonClose.TabIndex = 15;
             this.iconButtonClose.Tag = "Close";
             this.iconButtonClose.Text = "Close";
@@ -132,10 +110,10 @@ namespace BaseForm.Modules.FormEdit
             this.iconButtonSetting.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconButtonSetting.IconSize = 30;
             this.iconButtonSetting.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.iconButtonSetting.Location = new System.Drawing.Point(0, 335);
+            this.iconButtonSetting.Location = new System.Drawing.Point(0, 322);
             this.iconButtonSetting.Name = "iconButtonSetting";
             this.iconButtonSetting.Padding = new System.Windows.Forms.Padding(30, 10, 0, 10);
-            this.iconButtonSetting.Size = new System.Drawing.Size(233, 54);
+            this.iconButtonSetting.Size = new System.Drawing.Size(229, 54);
             this.iconButtonSetting.TabIndex = 14;
             this.iconButtonSetting.Tag = "Setting";
             this.iconButtonSetting.Text = "Setting";
@@ -155,10 +133,10 @@ namespace BaseForm.Modules.FormEdit
             this.iconButtonDataLog.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconButtonDataLog.IconSize = 30;
             this.iconButtonDataLog.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.iconButtonDataLog.Location = new System.Drawing.Point(0, 281);
+            this.iconButtonDataLog.Location = new System.Drawing.Point(0, 268);
             this.iconButtonDataLog.Name = "iconButtonDataLog";
             this.iconButtonDataLog.Padding = new System.Windows.Forms.Padding(30, 10, 0, 10);
-            this.iconButtonDataLog.Size = new System.Drawing.Size(233, 54);
+            this.iconButtonDataLog.Size = new System.Drawing.Size(229, 54);
             this.iconButtonDataLog.TabIndex = 13;
             this.iconButtonDataLog.Tag = "Data Log";
             this.iconButtonDataLog.Text = "Data Log";
@@ -178,10 +156,10 @@ namespace BaseForm.Modules.FormEdit
             this.iconButtonMeasure.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconButtonMeasure.IconSize = 30;
             this.iconButtonMeasure.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.iconButtonMeasure.Location = new System.Drawing.Point(0, 227);
+            this.iconButtonMeasure.Location = new System.Drawing.Point(0, 214);
             this.iconButtonMeasure.Name = "iconButtonMeasure";
             this.iconButtonMeasure.Padding = new System.Windows.Forms.Padding(30, 10, 0, 10);
-            this.iconButtonMeasure.Size = new System.Drawing.Size(233, 54);
+            this.iconButtonMeasure.Size = new System.Drawing.Size(229, 54);
             this.iconButtonMeasure.TabIndex = 12;
             this.iconButtonMeasure.Tag = "Measurement";
             this.iconButtonMeasure.Text = "Measurement";
@@ -201,10 +179,10 @@ namespace BaseForm.Modules.FormEdit
             this.iconButtonHome.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconButtonHome.IconSize = 30;
             this.iconButtonHome.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.iconButtonHome.Location = new System.Drawing.Point(0, 173);
+            this.iconButtonHome.Location = new System.Drawing.Point(0, 160);
             this.iconButtonHome.Name = "iconButtonHome";
             this.iconButtonHome.Padding = new System.Windows.Forms.Padding(30, 10, 0, 10);
-            this.iconButtonHome.Size = new System.Drawing.Size(233, 54);
+            this.iconButtonHome.Size = new System.Drawing.Size(229, 54);
             this.iconButtonHome.TabIndex = 11;
             this.iconButtonHome.Tag = "Home";
             this.iconButtonHome.Text = "Home";
@@ -222,24 +200,14 @@ namespace BaseForm.Modules.FormEdit
             this.iconButtonMenu.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconButtonMenu.IconSize = 30;
             this.iconButtonMenu.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.iconButtonMenu.Location = new System.Drawing.Point(0, 113);
+            this.iconButtonMenu.Location = new System.Drawing.Point(0, 100);
             this.iconButtonMenu.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.iconButtonMenu.Name = "iconButtonMenu";
             this.iconButtonMenu.Padding = new System.Windows.Forms.Padding(0, 0, 15, 0);
-            this.iconButtonMenu.Size = new System.Drawing.Size(233, 60);
+            this.iconButtonMenu.Size = new System.Drawing.Size(229, 60);
             this.iconButtonMenu.TabIndex = 10;
             this.iconButtonMenu.Tag = "menu";
             this.iconButtonMenu.UseVisualStyleBackColor = true;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.pictureBoxLogo);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(233, 113);
-            this.panel1.TabIndex = 0;
             // 
             // pictureBoxLogo
             // 
@@ -249,37 +217,52 @@ namespace BaseForm.Modules.FormEdit
             this.pictureBoxLogo.Margin = new System.Windows.Forms.Padding(30);
             this.pictureBoxLogo.Name = "pictureBoxLogo";
             this.pictureBoxLogo.Padding = new System.Windows.Forms.Padding(30);
-            this.pictureBoxLogo.Size = new System.Drawing.Size(233, 113);
+            this.pictureBoxLogo.Size = new System.Drawing.Size(229, 100);
             this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxLogo.TabIndex = 0;
             this.pictureBoxLogo.TabStop = false;
+            // 
+            // panelPicture
+            // 
+            this.panelPicture.Controls.Add(this.pictureBoxLogo);
+            this.panelPicture.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelPicture.Location = new System.Drawing.Point(0, 0);
+            this.panelPicture.Name = "panelPicture";
+            this.panelPicture.Size = new System.Drawing.Size(229, 100);
+            this.panelPicture.TabIndex = 17;
             // 
             // ucMenuVertical
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.panelMenu);
+            this.Controls.Add(this.panelLeft);
+            this.Controls.Add(this.iconButtonSetting);
+            this.Controls.Add(this.iconButtonDataLog);
+            this.Controls.Add(this.iconButtonMeasure);
+            this.Controls.Add(this.iconButtonHome);
+            this.Controls.Add(this.iconButtonMenu);
+            this.Controls.Add(this.iconButtonIEditForm);
+            this.Controls.Add(this.iconButtonClose);
+            this.Controls.Add(this.panelPicture);
             this.Name = "ucMenuVertical";
-            this.Size = new System.Drawing.Size(233, 864);
-            this.panelMenu.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
+            this.Padding = new System.Windows.Forms.Padding(0, 0, 0, 15);
+            this.Size = new System.Drawing.Size(229, 851);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
+            this.panelPicture.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel panelMenu;
-        private System.Windows.Forms.Panel panelLeft;
         private FontAwesome.Sharp.IconButton iconButtonIEditForm;
         private FontAwesome.Sharp.IconButton iconButtonClose;
         private FontAwesome.Sharp.IconButton iconButtonSetting;
         private FontAwesome.Sharp.IconButton iconButtonDataLog;
         private FontAwesome.Sharp.IconButton iconButtonMeasure;
         private FontAwesome.Sharp.IconButton iconButtonHome;
-        private FontAwesome.Sharp.IconButton iconButtonMenu;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.PictureBox pictureBoxLogo;
+        private System.Windows.Forms.Panel panelPicture;
+        public System.Windows.Forms.PictureBox pictureBoxLogo;
+        public FontAwesome.Sharp.IconButton iconButtonMenu;
+        public System.Windows.Forms.Panel panelLeft;
     }
 }

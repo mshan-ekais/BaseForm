@@ -13,6 +13,7 @@ using System.Windows.Forms;
 
 namespace BaseForm
 {
+
     public partial class BorderlessMainForm : Form
     {
         private int borderSize = 2;
@@ -20,13 +21,11 @@ namespace BaseForm
         private ThemeColors currentTheme = ThemeColors.KaisStyle;
         private Dictionary<string, UserControl> loadedModules = new Dictionary<string, UserControl>();
 
-
         //Constructor
         public BorderlessMainForm()
         {
             InitializeComponent();
-            this.Padding = new Padding(borderSize); //Border size
-
+            InitializeMenu();
             ApplyTheme(currentTheme);
         }
 
@@ -37,23 +36,30 @@ namespace BaseForm
         private extern static void SendMessage(System.IntPtr hWnd, int wMsg, int wParm, int lParm);
 
 
+        private void InitializeMenu()
+        {
+            ucMenuVertical.CollapseToggled += OnMenuCollapseToggled;
+            ucMenuVertical.MenuButtonClicked += OnMenuButtonClicked;
+
+            OnMenuButtonClicked(ucMenuVertical.MenuButtonType.Home);
+        }
+
         private void Form_Load(object sender, EventArgs e)
         {
-            formSize = this.ClientSize;
-            panelControl.Controls.Add(new ucHome() 
-            { 
-                Dock = DockStyle.Fill,
-            });
+            this.formSize = this.ClientSize;
+            this.Padding = new Padding(borderSize); //Border size
         }
+
 
         private void ApplyTheme(ThemeColors theme)
         {
             currentTheme = theme;
             this.BackColor = theme.BackColor;
             this.panelTopBar.BackColor = theme.TopPanelColor;
-            this.panelMenu.BackColor = theme.MenuPanelColor;
-            this.panelLeft.BackColor = theme.PointColor;
-            this.pictureBoxLogo.Image = theme.Image;
+
+            this.ucMenuVertical.BackColor = theme.MenuPanelColor;
+            this.ucMenuVertical.panelLeft.BackColor = theme.PointColor;
+            this.ucMenuVertical.pictureBoxLogo.Image = theme.Image;
 
             foreach (var control in GetAllControls(this))
             {
@@ -66,10 +72,9 @@ namespace BaseForm
                     btn.IconColor = theme.IconColor;
                     btn.ForeColor = theme.FontColor;
                 }
-                else
-                {
-                    control.ForeColor = theme.FontColor;
-                }
+
+                control.ForeColor = theme.FontColor;
+                
             }
         }
 
@@ -100,7 +105,6 @@ namespace BaseForm
         {
             MakeFormDraggable(panelTopBar);
         }
-
 
 
         //Overridden methods
@@ -230,21 +234,20 @@ namespace BaseForm
             Application.Exit();
         }
 
-        private void iconButtonMenu_Click(object sender, EventArgs e)
+        private void OnMenuCollapseToggled()
         {
-            CollaseMenu();
+            CollapseMenu(); // 메인 폼 전체 레이아웃 수정
         }
 
-        private void CollaseMenu()
+        public void CollapseMenu()
         {
-            //throw new NotImplementedException();
-            if (this.panelMenu.Width > 200)  //Collase menu
+            if (this.ucMenuVertical.Width > 200)  //Collase menu
             {
-                panelMenu.Width = 100;
-                pictureBoxLogo.Visible = false;
-                iconButtonMenu.Dock = DockStyle.Top;
+                this.ucMenuVertical.Width = 100;
+                this.ucMenuVertical.pictureBoxLogo.Visible = false;
+                this.ucMenuVertical.iconButtonMenu.Dock = DockStyle.Top;
 
-                foreach (Button menuButton in panelMenu.Controls.OfType<Button>())
+                foreach (Button menuButton in this.ucMenuVertical.Controls.OfType<Button>())
                 {
                     menuButton.Text = "";
                     menuButton.ImageAlign = ContentAlignment.MiddleCenter;
@@ -253,11 +256,11 @@ namespace BaseForm
             }
             else
             {   //Expand menu
-                panelMenu.Width = 230;
-                pictureBoxLogo.Visible = true;
-                iconButtonMenu.Dock = DockStyle.Top;
+                this.ucMenuVertical.Width = 230;
+                this.ucMenuVertical.pictureBoxLogo.Visible = true;
+                this.ucMenuVertical.iconButtonMenu.Dock = DockStyle.Top;
 
-                foreach (Button menuButton in panelMenu.Controls.OfType<Button>())
+                foreach (Button menuButton in this.ucMenuVertical.Controls.OfType<Button>())
                 {
                     if (menuButton.Tag.ToString() == "menu")
                     {
@@ -275,34 +278,37 @@ namespace BaseForm
         }
 
 
-        private async void iconButtonHome_Click(object sender, EventArgs e)
+        private async void OnMenuButtonClicked(ucMenuVertical.MenuButtonType buttonType)
         {
-            panelLeft.Height = iconButtonHome.Height;
-            panelLeft.Top = iconButtonHome.Top;
-            await LoadModuleAsync("ucHome", () => new ucHome());
+            IconButton selectedButton = ucMenuVertical.GetButton(buttonType);
+
+            ucMenuVertical.PanelLeft.Height = selectedButton.Height;
+            ucMenuVertical.PanelLeft.Top = selectedButton.Top;
+
+            // UserControl 로딩
+            switch (buttonType)
+            {
+                case ucMenuVertical.MenuButtonType.Home:
+                    await LoadModuleAsync("ucHome", () => new ucHome());
+                    break;
+                case ucMenuVertical.MenuButtonType.Measure:
+                    await LoadModuleAsync("ucMeasurement", () => new ucMeasurement());
+                    break;
+                case ucMenuVertical.MenuButtonType.DataLog:
+                    await LoadModuleAsync("ucDataLog", () => new ucDataLog());
+                    break;
+                case ucMenuVertical.MenuButtonType.Setting:
+                    await LoadModuleAsync("ucSetting", () => new ucSetting());
+                    break;
+                case ucMenuVertical.MenuButtonType.EditForm:
+                    iconButtonIEditForm_Click();
+                    break;
+                case ucMenuVertical.MenuButtonType.Close:
+                    iconButtonClose_Click();
+                    break;
+            }
         }
 
-        private async void iconButtonMeasure_Click(object sender, EventArgs e)
-        {
-            panelLeft.Height = iconButtonMeasure.Height;
-            panelLeft.Top = iconButtonMeasure.Top;
-            await LoadModuleAsync("ucMeasurement", () => new ucMeasurement());
-        }
-
-
-        private async void iconButtonDataLog_Click(object sender, EventArgs e)
-        {
-            panelLeft.Height = iconButtonDataLog.Height;
-            panelLeft.Top = iconButtonDataLog.Top;
-            await LoadModuleAsync("ucDataLog", () => new ucDataLog());
-        }
-
-        private async void iconButtonSetting_Click(object sender, EventArgs e)
-        {
-            panelLeft.Height = iconButtonSetting.Height;
-            panelLeft.Top = iconButtonSetting.Top;
-            await LoadModuleAsync("ucSetting", () => new ucSetting());
-        }
 
         private async Task LoadModuleAsync(string moduleKey, Func<UserControl> moduleFactory)
         {
@@ -316,7 +322,7 @@ namespace BaseForm
             await Task.CompletedTask;
         }
 
-        private void iconButtonIEditForm_Click(object sender, EventArgs e)
+        private void iconButtonIEditForm_Click()
         {
             this.ActiveControl = null;
 
@@ -357,13 +363,13 @@ namespace BaseForm
 
         public void SetMenuPosition(DockStyle dockStyle)
         {
-            panelMenu.Dock = dockStyle;
-            panelMenu.Refresh();
+            ucMenuVertical.Dock = dockStyle;
+            ucMenuVertical.Refresh();
         }
 
 
 
-        private void iconButtonClose_Click(object sender, EventArgs e)
+        private void iconButtonClose_Click()
         {
             this.ActiveControl = null;
 

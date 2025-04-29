@@ -23,14 +23,14 @@ namespace BaseForm.Modules.FormEdit
 
         private void buttonRight_Click(object sender, EventArgs e)
         {
-            MenuStyleChanged?.Invoke(DockStyle.Left);
+            MenuStyleChanged?.Invoke(DockStyle.Right);
             //OnMenuStyleChanged(_currentMenuStyle);
 
         }
 
         private void buttonLeft_Click(object sender, EventArgs e)
         {
-            MenuStyleChanged?.Invoke(DockStyle.Right);
+            MenuStyleChanged?.Invoke(DockStyle.Left);
             //OnMenuStyleChanged(_currentMenuStyle);
         }
 
@@ -41,7 +41,7 @@ namespace BaseForm.Modules.FormEdit
 
         private void buttonTop_Click(object sender, EventArgs e)
         {
-
+            MenuStyleChanged?.Invoke(DockStyle.Top);
         }
 
         private void buttonBottom_Click(object sender, EventArgs e)

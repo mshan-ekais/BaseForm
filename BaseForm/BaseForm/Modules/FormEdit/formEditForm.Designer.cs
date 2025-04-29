@@ -40,10 +40,8 @@ namespace BaseForm.Modules
             this.iconButtonGeneral = new FontAwesome.Sharp.IconButton();
             this.iconButtonSave = new FontAwesome.Sharp.IconButton();
             this.iconButtonSaveClose = new FontAwesome.Sharp.IconButton();
-            this.filteringUIContext1 = new DevExpress.Utils.Filtering.FilteringUIContext(this.components);
             this.panelTopBar.SuspendLayout();
             this.panelMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.filteringUIContext1)).BeginInit();
             this.SuspendLayout();
             // 
             // panelTopBar
@@ -262,7 +260,6 @@ namespace BaseForm.Modules
             this.Resize += new System.EventHandler(this.formEditForm_Resize);
             this.panelTopBar.ResumeLayout(false);
             this.panelMenu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.filteringUIContext1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -278,7 +275,6 @@ namespace BaseForm.Modules
         private FontAwesome.Sharp.IconButton iconButtonMenu;
         private FontAwesome.Sharp.IconButton iconButtonSave;
         private FontAwesome.Sharp.IconButton iconButtonSaveClose;
-        private DevExpress.Utils.Filtering.FilteringUIContext filteringUIContext1;
         private FontAwesome.Sharp.IconButton iconButtonGeneral;
     }
 }

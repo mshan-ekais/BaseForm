@@ -36,13 +36,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.Data.Desktop.v24.2, Version=24.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Data.v24.2, Version=24.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Drawing.v24.2, Version=24.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Printing.v24.2.Core, Version=24.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Sparkline.v24.2.Core, Version=24.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Utils.v24.2, Version=24.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraEditors.v24.2, Version=24.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v24.2, Version=24.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="FontAwesome.Sharp, Version=5.15.4.0, Culture=neutral, PublicKeyToken=d16d1e4e568ec10f, processorArchitecture=MSIL">
       <HintPath>..\packages\FontAwesome.Sharp.5.15.4\lib\net472\FontAwesome.Sharp.dll</HintPath>
     </Reference>
@@ -50,9 +44,13 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -97,12 +95,6 @@
     <Compile Include="Modules\FormEdit\ucGeneral.Designer.cs">
       <DependentUpon>ucGeneral.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\FormEdit\ucMenuVertical.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Modules\FormEdit\ucMenuVertical.Designer.cs">
-      <DependentUpon>ucMenuVertical.cs</DependentUpon>
-    </Compile>
     <Compile Include="Modules\FormEdit\ucSamplePreview.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -137,6 +129,12 @@
     <Compile Include="Modules\ucMeasurement.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Modules\ucMenuVertical.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modules\ucMenuVertical.Designer.cs">
+      <DependentUpon>ucMenuVertical.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modules\ucSetting.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -163,9 +161,6 @@
     <EmbeddedResource Include="Modules\FormEdit\ucGeneral.resx">
       <DependentUpon>ucGeneral.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Modules\FormEdit\ucMenuVertical.resx">
-      <DependentUpon>ucMenuVertical.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Modules\FormEdit\ucThemeColors.resx">
       <DependentUpon>ucThemeColors.cs</DependentUpon>
     </EmbeddedResource>
@@ -183,6 +178,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\ucMeasurement.resx">
       <DependentUpon>ucMeasurement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\ucMenuVertical.resx">
+      <DependentUpon>ucMenuVertical.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\ucSetting.resx">
       <DependentUpon>ucSetting.cs</DependentUpon>
